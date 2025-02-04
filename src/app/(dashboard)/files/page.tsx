@@ -17,6 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useState } from "react";
 
 export default function FilesPage() {
   const { user } = useAuth();
@@ -24,8 +25,10 @@ export default function FilesPage() {
   const { data: files, isLoading } = useGetFilesReceived({
     receiverId: user?.id ?? NaN,
   });
+  const [currentLoading, setCurrrentLoading] = useState<number>();
 
   async function handleVerifyFile(file_id: number) {
+    setCurrrentLoading(() => file_id);
     try {
       const res = await api.get<File>(`/files/verify/file_id/${file_id}`);
 
@@ -41,6 +44,13 @@ export default function FilesPage() {
         description: "Ocorreu um erro na verificação do arquivo",
         variant: "destructive",
       });
+    }
+    setCurrrentLoading(() => undefined);
+  }
+
+  function isLoadingFile(file_id: number) {
+    if (currentLoading === file_id) {
+      return true;
     }
   }
 
@@ -93,7 +103,10 @@ export default function FilesPage() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button onClick={() => handleVerifyFile(file.id)}>
+                <Button
+                  disabled={isLoadingFile(file.id)}
+                  onClick={() => handleVerifyFile(file.id)}
+                >
                   Verificar e Baixar
                 </Button>
               </CardFooter>
