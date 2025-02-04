@@ -12,7 +12,7 @@ export function useGetFilesReceived(params: { receiverId: number }) {
         .get<File[]>(`/files/receiver_id/${params.receiverId}`)
         .then((res) => res.data),
     // { refreshInterval: 5000 },
-    { errorRetryCount: 1 },
+    { shouldRetryOnError: false },
   );
   return res;
 }
