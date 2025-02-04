@@ -8,7 +8,7 @@ export async function Navbar() {
   const user = await getAuth();
   return (
     <nav className="fixed z-20 flex h-16 w-screen items-center justify-between border-b-2 bg-white px-2 text-sm text-zinc-700 shadow-md lg:px-8">
-      <span>Bem Vindo, {user?.name}</span>
+      <Link href={"/"}>Bem Vindo, {user?.name}</Link>
       <ul className="flex items-center gap-4">
         <li>
           <Link
